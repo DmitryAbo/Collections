@@ -1,16 +1,18 @@
 package ru.netology.game;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Player;
 import ru.netology.exeptions.NotRegisteredException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
+
     Player player1 = new Player(1, "Андрей", 1);
     Player player2 = new Player(2, "Иван", 2);
     Player player3 = new Player(3, "Василий", 3);
@@ -18,27 +20,40 @@ class GameTest {
     Player player5 = new Player(5, "Илья", 4);
     Player player6 = new Player(6, "Дмитрий", 3);
     Player player7 = new Player(7, "Петр", 7);
-    Collection<Player> playerstest = new ArrayList<>();
-    Game game = new Game(playerstest);
+    public Map<String, Player> playersTest = new HashMap<>();
+    Game game = new Game(playersTest);
+
+    @BeforeEach
+    public void initEach() {
+        playersTest.put(player1.getName(), player1);
+        playersTest.put(player2.getName(), player2);
+        playersTest.put(player3.getName(), player3);
+        playersTest.put(player4.getName(), player4);
+        playersTest.put(player5.getName(), player5);
+        playersTest.put(player6.getName(), player6);
+        playersTest.put(player7.getName(), player7);
+    }
 
 
     @Test
     void shouldAddOnePlayer() {
-        game.register(player1);
-        assertEquals(1, playerstest.size());
+        Map<String, Player> playersTest = new HashMap<>();
+        Game gameEmpty = new Game(playersTest);
+        gameEmpty.register(player1);
+        assertEquals(1, playersTest.size());
     }
 
     @Test
     void shouldAddSamePlayer() {
-        game.register(player1);
-        game.register(player2);
-        assertEquals(2, playerstest.size());
+        Map<String, Player> playersTest = new HashMap<>();
+        Game gameEmpty = new Game(playersTest);
+        gameEmpty.register(player1);
+        gameEmpty.register(player2);
+        assertEquals(2, playersTest.size());
     }
 
     @Test
     void shouldExeptionPlayer1() {
-        playerstest = List.of(player1, player2, player3, player4, player5, player6, player7);
-        Game game = new Game(playerstest);
         assertThrows(NotRegisteredException.class, () -> {
             game.round("Феофан", "Илья");
         });
@@ -46,8 +61,6 @@ class GameTest {
 
     @Test
     void shouldExeptionPlayer2() {
-        playerstest = List.of(player1, player2, player3, player4, player5, player6, player7);
-        Game game = new Game(playerstest);
         assertThrows(NotRegisteredException.class, () -> {
             game.round("Илья", "Феофан");
         });
@@ -55,26 +68,18 @@ class GameTest {
 
     @Test
     void shouldDraw() {
-        playerstest = List.of(player1, player2, player3, player4, player5, player6, player7);
-        Game game = new Game(playerstest);
-        int actual = game.round("Николай", "Илья");
-        assertEquals(0,actual);
+        assertEquals(0, game.round("Николай", "Илья"));
     }
 
     @Test
     void shouldWinPlayer1() {
-        playerstest = List.of(player1, player2, player3, player4, player5, player6, player7);
-        Game game = new Game(playerstest);
-        int actual = game.round("Петр", "Илья");
-        assertEquals(1,actual);
+        assertEquals(1, game.round("Петр", "Илья"));
     }
 
     @Test
     void shouldWinPlayer2() {
-        playerstest = List.of(player1, player2, player3, player4, player5, player6, player7);
-        Game game = new Game(playerstest);
-        int actual = game.round("Василий", "Николай");
-        assertEquals(2,actual);
+        ;
+        assertEquals(2, game.round("Василий", "Николай"));
     }
 
 
