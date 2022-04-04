@@ -77,7 +77,8 @@ class GameTest {
     }
 
     @Test
-    void shouldWinPlayer2() {;
+    void shouldWinPlayer2() {
+        ;
         assertEquals(2, game.round("Василий", "Николай"));
     }
 
